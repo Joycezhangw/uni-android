@@ -1,0 +1,80 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion '29.0.2'
+    defaultConfig {
+        applicationId "com.HBuilder.UniPlugin"
+        minSdkVersion 19
+        targetSdkVersion 26 //建议此属性值设为21 io.dcloud.PandoraEntry 作为apk入口时   必须设置 targetSDKVersion>=21 沉浸式才生效
+
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        ndk {
+            abiFilters 'x86','armeabi-v7a'
+        }
+    }
+    buildTypes {
+        release {
+            zipAlignEnabled true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            zipAlignEnabled true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    //使用uniapp时，需复制下面代码
+    /*代码开始*/
+    aaptOptions {
+        additionalParameters '--auto-add-overlay'
+        //noCompress 'foo', 'bar'
+        ignoreAssetsPattern "!.svn:!.git:.*:!CVS:!thumbs.db:!picasa.ini:!*.scc:*~"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dependenciesInfo {
+        includeInApk true
+        includeInBundle true
+    }
+    /*代码结束*/
+}
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.aar'])
+
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+
+    /*uniapp所需库-----------------------开始*/
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.facebook.fresco:fresco:1.13.0'
+    implementation "com.facebook.fresco:animated-gif:1.13.0"
+    /*uniapp所需库-----------------------结束*/
+    // 基座需要，必须添加
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'com.alibaba:fastjson:1.1.46.android'
+    compile project(':serialPortPlus_module')
+
+    // 添加uni-app插件
+    implementation project(':toastplus_module')
+    implementation project(':serialPortPlus_module')
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}

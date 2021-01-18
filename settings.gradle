@@ -1,0 +1,4 @@
+include ':serialPortPlus_module'
+include ':toastplus_module'
+include ':app'
+rootProject.name = "uni-android"
